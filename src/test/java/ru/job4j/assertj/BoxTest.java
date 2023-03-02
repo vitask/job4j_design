@@ -67,7 +67,7 @@ class BoxTest {
         double area = box.getArea();
         assertThat(area).
                 isGreaterThan(1.0)
-                .isCloseTo(27.71, offset( 0.1));
+                .isCloseTo(27.71, offset(0.1));
     }
 
     @Test
