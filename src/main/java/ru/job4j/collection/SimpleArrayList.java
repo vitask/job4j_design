@@ -43,7 +43,8 @@ public class SimpleArrayList<T> implements SimpleList<T> {
                 index,
                 size - index - 1
         );
-        container[size-- - 1] = null;
+        container[size - 1] = null;
+        size--;
         modCount++;
         return old;
     }
