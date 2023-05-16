@@ -1,39 +1,26 @@
 package ru.job4j.collection;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ForwardLinked<T> implements Iterable<T> {
-
-    private int size;
-    private int modCount;
     private Node<T> head;
 
     public void add(T value) {
-        Node<T> last = head;
-        Node<T> newNode = new Node<>(value, null);
+        Node<T> node = new Node<T>(value, null);
         if (head == null) {
-            head = newNode;
-        } else {
-            while (last.next != null) {
-                last = last.next;
-            }
-            last.next = newNode;
+            head = node;
+            return;
         }
-        size++;
-        modCount++;
-    }
-
-    public T get(int index) {
-        Objects.checkIndex(index, size);
-        Node<T> node = head;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
+        Node<T> tail = head;
+        while (tail.next != null) {
+            tail = tail.next;
         }
-        return node.value;
+        tail.next = node;
     }
 
     public void addFirst(T value) {
-        head = head == null ? new Node<>(value, null) : new Node<>(value, head);
+        head = new Node<>(value, head);
     }
 
     public T deleteFirst() {
@@ -50,17 +37,12 @@ public class ForwardLinked<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<>() {
-
-            private final int expectedModCount = modCount;
-            private Node<T> itElement = head;
+        return new Iterator<T>() {
+            Node<T> node = head;
 
             @Override
             public boolean hasNext() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                return itElement != null;
+                return node != null;
             }
 
             @Override
@@ -68,9 +50,9 @@ public class ForwardLinked<T> implements Iterable<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                Node<T> result = itElement;
-                itElement = itElement.next;
-                return result.value;
+                T value = node.value;
+                node = node.next;
+                return value;
             }
         };
     }
