@@ -1,9 +1,6 @@
 package ru.job4j.collection;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class ForwardLinked<T> implements Iterable<T> {
 
@@ -33,6 +30,15 @@ public class ForwardLinked<T> implements Iterable<T> {
             node = node.next;
         }
         return node.value;
+    }
+
+    public void addFirst(T value) {
+        if (head == null) {
+            head = new Node<>(value, null);
+        }
+        else {
+            head = new Node<>(value, head);
+        }
     }
 
     public T deleteFirst() {
