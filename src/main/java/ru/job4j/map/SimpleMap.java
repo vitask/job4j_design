@@ -27,7 +27,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
             result = true;
             modCount++;
             count++;
-
         }
         return result;
     }
