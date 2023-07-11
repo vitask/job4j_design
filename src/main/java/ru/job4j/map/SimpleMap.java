@@ -52,7 +52,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         V value = null;
         int index = index(key);
-        if (table[index] != null && table[index].key == key) {
+        if (table[index] != null
+                && Objects.hashCode(key) == Objects.hashCode(table[index].key)
+                && Objects.equals(table[index].key, key)) {
             value = table[index].value;
         }
         return value;
