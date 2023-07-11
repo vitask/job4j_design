@@ -48,27 +48,24 @@ public class SimpleMap<K, V> implements Map<K, V> {
         }
     }
 
+    private boolean equalsKey(K key, int index) {
+        return  Objects.nonNull(table[index])
+                && Objects.hashCode(table[index].key) == Objects.hashCode(key)
+                && Objects.equals(table[index].key, key);
+    }
+
     @Override
     public V get(K key) {
-        V value = null;
         int index = index(key);
-        if (table[index] != null
-                && Objects.hashCode(key) == Objects.hashCode(table[index].key)
-                && Objects.equals(table[index].key, key)) {
-            value = table[index].value;
-        }
-        return value;
+        return equalsKey(key, index) ? table[index].value : null;
     }
 
     @Override
     public boolean remove(K key) {
-        boolean result = false;
         int index = index(key);
-        if (table[index] != null
-                && Objects.hashCode(key) == Objects.hashCode(table[index].key)
-                && Objects.equals(table[index].key, key))  {
+        boolean result = equalsKey(key, index);
+        if (result)  {
             table[index] = null;
-            result = true;
             count--;
             modCount++;
         }
