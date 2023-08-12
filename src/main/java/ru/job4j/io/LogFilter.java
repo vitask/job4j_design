@@ -12,7 +12,7 @@ public class LogFilter {
         List<String> list = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             list = reader.lines().map(log -> log.split(" "))
-                    .filter(log -> log[log.length - 2].equals("404"))
+                    .filter(log -> "404".equals(log[log.length - 2]))
                     .map(log -> String.join(" ", log))
                     .collect(Collectors.toList());
         } catch (IOException e) {
