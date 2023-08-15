@@ -3,6 +3,8 @@ package ru.job4j.io;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 class ConfigTest {
 
@@ -29,5 +31,25 @@ class ConfigTest {
         Config config = new Config(path);
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void whenNoValueException() {
+        String path = "./data/no_value.properties";
+        Config config = new Config(path);
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                config::load);
+        assertThat(exception.getMessage()).isEqualTo("IllegalArgument!");
+    }
+
+    @Test
+    public void whenNoEqualException() {
+        String path = "./data/no_equal.properties";
+        Config config = new Config(path);
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                config::load);
+        assertThat(exception.getMessage()).isEqualTo("IllegalArgument!");
     }
 }

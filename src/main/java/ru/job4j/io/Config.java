@@ -22,7 +22,7 @@ public class Config {
                 if (!str.startsWith("#") && !str.isBlank()) {
                     int index = str.indexOf("=");
                     if (index < 1 || index >= str.length() - 1) {
-                        throw new IllegalArgumentException();
+                        throw new IllegalArgumentException("IllegalArgument!");
                     }
                     values.put(str.substring(0, index).trim(), str.substring(index + 1).trim());
                 }
