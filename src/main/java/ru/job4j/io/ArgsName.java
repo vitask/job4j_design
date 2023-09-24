@@ -17,9 +17,6 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Arguments not passed to program");
-        }
         for (String str : args) {
             int index = check(str);
             values.put(str.substring(1, index), str.substring(index + 1));
@@ -27,6 +24,9 @@ public class ArgsName {
     }
 
     public static ArgsName of(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Arguments not passed to program");
+        }
         ArgsName argsName = new ArgsName();
         argsName.parse(args);
         return argsName;
