@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -32,13 +33,23 @@ public class Zip {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    private static void validate(String[] args) {
+        Path path = Path.of(args[0]);
+        if (!Files.exists(path) && !Files.isDirectory(path)) {
+            throw new IllegalArgumentException("The root folder does not exist");
+        }
+        if (!args[1].startsWith(".")) {
+            throw new IllegalArgumentException("The file extension must start with a point");
+        }
+    }
+
+        public static void main(String[] args) throws IOException {
         ArgsName argsName = ArgsName.of(args);
         String directory = argsName.get("d");
         String exclude = argsName.get("e");
         String output = argsName.get("o");
 
-        Search.validate(new String[]{directory, exclude});
+        validate(new String[]{directory, exclude});
         List<Path> pathList = Search.search(Path.of(directory),
                 path -> !path.toFile().getName().endsWith(exclude));
 
