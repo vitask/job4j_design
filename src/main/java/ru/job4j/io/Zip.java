@@ -33,13 +33,16 @@ public class Zip {
         }
     }
 
-    private static void validate(String[] args) {
-        Path path = Path.of(args[0]);
-        if (!Files.exists(path) && !Files.isDirectory(path)) {
+    private static void validate(ArgsName argsName) {
+        File file = new File(argsName.get("d"));
+        if (!Files.isDirectory(file.toPath()) && !Files.exists(file.toPath())) {
             throw new IllegalArgumentException("The root folder does not exist");
         }
-        if (!args[1].startsWith(".")) {
+        if (!argsName.get("e").startsWith(".")) {
             throw new IllegalArgumentException("The file extension must start with a point");
+        }
+        if (!argsName.get("o").endsWith(".zip")) {
+            throw new IllegalArgumentException("The argument should ends with .zip");
         }
     }
 
@@ -49,7 +52,7 @@ public class Zip {
         String exclude = argsName.get("e");
         String output = argsName.get("o");
 
-        validate(new String[]{directory, exclude});
+        validate(argsName);
         List<Path> pathList = Search.search(Path.of(directory),
                 path -> !path.toFile().getName().endsWith(exclude));
 
