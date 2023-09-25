@@ -1,32 +1,30 @@
 package ru.job4j.io;
-
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.*;
 
 class ArgsNameTest {
 
     @Test
     void whenGetFirst() {
-        ArgsName jvm = ArgsName.of(new String[]{"-Xmx=512", "-encoding=UTF-8"});
+        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
         assertThat(jvm.get("Xmx")).isEqualTo("512");
     }
 
     @Test
     void whenGetFirstReorder() {
-        ArgsName jvm = ArgsName.of(new String[]{"-encoding=UTF-8", "-Xmx=512"});
+        ArgsName jvm = ArgsName.of(new String[] {"-encoding=UTF-8", "-Xmx=512"});
         assertThat(jvm.get("Xmx")).isEqualTo("512");
     }
 
     @Test
     void whenMultipleEqualsSymbol() {
-        ArgsName jvm = ArgsName.of(new String[]{"-request=?msg=Exit="});
+        ArgsName jvm = ArgsName.of(new String[] {"-request=?msg=Exit="});
         assertThat(jvm.get("request")).isEqualTo("?msg=Exit=");
     }
 
     @Test
     void whenKeyNotExist() {
-        ArgsName jvm = ArgsName.of(new String[]{"-Xmx=512"});
+        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512"});
         assertThatThrownBy(() -> jvm.get("Xms")).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
                 .hasMessageContaining("This key: 'Xms' is missing");
@@ -45,7 +43,7 @@ class ArgsNameTest {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-=?msg=Exit="}))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
-                .hasMessageContaining("Error: This argument '-=?msg=Exit=' does not contain an equal sign");
+                .hasMessageContaining("Error: This argument '-=?msg=Exit=' does not contain a key");
     }
 
     @Test
@@ -53,7 +51,7 @@ class ArgsNameTest {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-=?msg=Hello="}))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
-                .hasMessageContaining("Error: This argument '-=?msg=Hello=' does not contain an equal sign");
+                .hasMessageContaining("Error: This argument '-=?msg=Hello=' does not contain a key");
     }
 
     @Test
@@ -61,7 +59,7 @@ class ArgsNameTest {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-request="}))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
-                .hasMessageContaining("Error: This argument '-request=' does not contain an equal sign");
+                .hasMessageContaining("Error: This argument '-request=' does not contain a value");
     }
 
     @Test
@@ -69,7 +67,7 @@ class ArgsNameTest {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-encoding="}))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
-                .hasMessageContaining("Error: This argument '-encoding=' does not contain an equal sign");
+                .hasMessageContaining("Error: This argument '-encoding=' does not contain a value");
     }
 
     @Test
@@ -86,26 +84,5 @@ class ArgsNameTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^.+")
                 .hasMessageContaining("Error: This argument 'request=?msg=Exit=' does not start with a '-' character");
-    }
-
-    @Test
-    void whenThereIsNoDashSymbol() {
-        assertThatThrownBy(() -> ArgsName.of(new String[]{"encoding=UTF-8"}))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Error: This argument 'encoding=UTF-8' does not start with a '-' character");
-    }
-
-    @Test
-    void whenThereIsNoEqualsSymbol() {
-        assertThatThrownBy(() -> ArgsName.of(new String[]{"-encoding:UTF-8"}))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Error: This argument '-encoding:UTF-8' does not contain an equal sign");
-    }
-
-    @Test
-    void whenThereIsNoValue() {
-        assertThatThrownBy(() -> ArgsName.of(new String[]{"-encoding="}))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Error: This argument '-encoding=' does not contain an equal sign");
     }
 }

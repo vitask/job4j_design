@@ -18,8 +18,8 @@ public class ArgsName {
 
     private void parse(String[] args) {
         for (String str : args) {
-            int index = check(str);
-            values.put(str.substring(1, index), str.substring(index + 1));
+            String[] key = ArgsName.check(str);
+            values.put(key[0].substring(1), key[1]);
         }
     }
 
@@ -32,19 +32,29 @@ public class ArgsName {
         return argsName;
     }
 
-    private static int check(String arg) {
+    private static String[] check(String arg) {
+        String[] parts = arg.split("=", 2);
         if (!arg.startsWith("-")) {
             throw new IllegalArgumentException(String.format(
                     "Error: This argument '%s' does not start with a '-' character", arg
             ));
         }
-        int index = arg.indexOf("=");
-        if (index < 2 || index >= arg.length() - 1) {
+        if (!arg.contains("=")) {
             throw new IllegalArgumentException(String.format(
                     "Error: This argument '%s' does not contain an equal sign", arg
             ));
         }
-        return index;
+        if (arg.endsWith("=") && parts[1].isEmpty()) {
+            throw new IllegalArgumentException(String.format(
+                    "Error: This argument '%s' does not contain a value", arg
+            ));
+        }
+        if (arg.startsWith("-=")) {
+            throw new IllegalArgumentException(String.format(
+                    "Error: This argument '%s' does not contain a key", arg
+            ));
+        }
+        return parts;
     }
 
     public static void main(String[] args) {
