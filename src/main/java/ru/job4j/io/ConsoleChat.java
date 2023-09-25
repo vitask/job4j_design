@@ -14,6 +14,7 @@ public class ConsoleChat {
     private static final String CONTINUE = "продолжить";
     private final String path;
     private final String botAnswers;
+    private final Random random = new Random();
 
     public ConsoleChat(String path, String botAnswers) {
         this.path = path;
@@ -27,6 +28,7 @@ public class ConsoleChat {
         String console = scanner.nextLine();
         List<String> phrases = readPhrases();
 
+
         while (!OUT.equals(console)) {
             log.add(console);
             if (STOP.equals(console)) {
@@ -34,7 +36,7 @@ public class ConsoleChat {
             } else if (CONTINUE.equals(console)) {
                 play = true;
             } else if (play) {
-                String answer = phrases.get(new Random().nextInt(phrases.size()));
+                String answer = phrases.get(random.nextInt(phrases.size()));
                 System.out.println(answer);
                 log.add(answer);
             }
