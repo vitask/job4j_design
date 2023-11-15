@@ -6,6 +6,18 @@ public class Info {
     private final String phone;
     private final boolean haveCar;
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public boolean isHaveCar() {
+        return haveCar;
+    }
+
     public Info(String city, String phone, boolean haveCar) {
         this.city = city;
         this.phone = phone;
