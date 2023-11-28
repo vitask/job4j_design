@@ -14,7 +14,7 @@ create table users
 (
     id serial primary key,
     user_name varchar(255),
-    users_id int references users(id)
+    roles_id int references roles(id)
 );
 
 create table roles_rules
