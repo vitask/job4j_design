@@ -14,10 +14,10 @@ public class UserGenerator implements Generate {
     public static final String SEPARATOR = " ";
     public static final Integer NEW_USERS = 1000;
 
-    public static List<String> names;
-    public static List<String> surnames;
-    public static List<String> patrons;
-    private static final List<User> USERS = new ArrayList<>();
+    public List<String> names;
+    public List<String> surnames;
+    public List<String> patrons;
+    private final List<User> users = new ArrayList<>();
     private final Random random;
 
     public UserGenerator(Random random) {
@@ -27,12 +27,14 @@ public class UserGenerator implements Generate {
 
     @Override
     public void generate() {
-        USERS.clear();
+        users.clear();
         for (int i = 0; i < NEW_USERS; i++) {
-            USERS.add(new User(
-                    surnames.get(random.nextInt(surnames.size())) + SEPARATOR
-                            + names.get(random.nextInt(names.size())) + SEPARATOR
-                            + patrons.get(random.nextInt(patrons.size()))));
+            users.add(new User(
+                    String.join(SEPARATOR,
+                            surnames.get(random.nextInt(surnames.size())),
+                            names.get(random.nextInt(names.size())),
+                            patrons.get(random.nextInt(patrons.size())))));
+
         }
     }
 
@@ -47,10 +49,10 @@ public class UserGenerator implements Generate {
     }
 
     public User randomUser() {
-        return USERS.get(random.nextInt(USERS.size()));
+        return users.get(random.nextInt(users.size()));
     }
 
-    public static List<User> getUsers() {
-        return USERS;
+    public List<User> getUsers() {
+        return users;
     }
 }
