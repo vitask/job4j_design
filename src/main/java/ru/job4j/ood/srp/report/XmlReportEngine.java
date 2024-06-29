@@ -24,10 +24,9 @@ public class XmlReportEngine implements Report {
 
     @Override
     public String generate(Predicate<Employee> filter) {
-        EmployeeList list = new EmployeeList(store.findBy(filter));
         String xml = "";
         try (StringWriter writer = new StringWriter()) {
-            marshaller.marshal(list, writer);
+            marshaller.marshal(new EmployeeList(store.findBy(filter)), writer);
             xml = writer.getBuffer().toString();
         } catch (Exception e) {
             e.printStackTrace();

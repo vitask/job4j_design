@@ -2,10 +2,7 @@ package ru.job4j.ood.srp.model;
 
 import ru.job4j.ood.srp.formatter.DateTimeAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Calendar;
 import java.util.Objects;
@@ -13,12 +10,15 @@ import java.util.Objects;
 @XmlRootElement(name = "employee")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Employee {
-    @XmlAttribute
+    @XmlElement
     private String name;
+    @XmlElement
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private Calendar hired;
+    @XmlElement
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private Calendar fired;
+    @XmlElement
     private double salary;
 
     public Employee() {
